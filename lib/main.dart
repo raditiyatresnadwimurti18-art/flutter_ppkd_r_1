@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ppkd_r_1/day_5/tugas1flutter.dart';
+import 'package:flutter_ppkd_r_1/day_7/day7.dart';
+import 'package:flutter_ppkd_r_1/day_7/tugas2flutter.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,8 +12,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter demo',
-      home: Tugas1(),
+
+      home: Tugas2flutter(),
     );
   }
 }
