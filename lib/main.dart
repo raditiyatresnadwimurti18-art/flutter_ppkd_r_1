@@ -17,8 +17,8 @@ class MainApp extends StatelessWidget {
 
       // home: Tugas2flutter(),
       // home: Tugas1(),
-      // home: Tugas3(),
-      home: Tugas4(),
+      home: Tugas3(),
+      // home: Tugas4(),
       // home: Latih(),
     );
   }
