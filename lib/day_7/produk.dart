@@ -17,7 +17,7 @@ class DataProduk extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Container(
+            SizedBox(
               width: 180,
               height: 180,
               child: Column(
@@ -32,7 +32,7 @@ class DataProduk extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Container(
+            SizedBox(
               width: 180,
               height: 180,
               child: Column(
@@ -54,7 +54,7 @@ class DataProduk extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Container(
+            SizedBox(
               width: 180,
               height: 180,
               child: Column(
@@ -69,7 +69,7 @@ class DataProduk extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Container(
+            SizedBox(
               width: 180,
               height: 180,
               child: Column(
