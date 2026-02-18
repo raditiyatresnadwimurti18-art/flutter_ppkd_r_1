@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ppkd_r_1/latih/isi.dart';
 import 'package:flutter_ppkd_r_1/latih/navbar.dart';
-import 'package:flutter_ppkd_r_1/latih/scrol.dart';
 import 'package:flutter_ppkd_r_1/latih/widget1.dart';
 
 class Latih extends StatelessWidget {

@@ -10,7 +10,7 @@ class IsiHome extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         itemCount: 6,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
+          return SizedBox(
             width: double.infinity,
             height: 200,
             child: Image.asset('assets/images/l${index + 1}.png'),

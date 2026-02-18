@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ppkd_r_1/tugas3/galeri.dart';
-import 'package:flutter_ppkd_r_1/day_8/textfield.dart';
-import 'package:flutter_ppkd_r_1/tugas3/galeri.dart';
+import 'package:flutter_ppkd_r_1/tugas3/textfield.dart';
 
 class Tugas3 extends StatelessWidget {
   const Tugas3({super.key});
