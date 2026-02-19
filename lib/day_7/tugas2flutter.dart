@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ppkd_r_1/day_10/homed10.dart';
 import 'package:flutter_ppkd_r_1/day_7/kontak.dart';
 import 'package:flutter_ppkd_r_1/day_7/produk.dart';
 
@@ -12,7 +13,15 @@ class Tugas2flutter extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: Image.asset('assets/images/logo2.png'),
+        leading: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeD10()),
+            );
+          },
+          child: Image.asset('assets/images/logo2.png'),
+        ),
         centerTitle: true,
         title: Text(
           'Selamat Datang',

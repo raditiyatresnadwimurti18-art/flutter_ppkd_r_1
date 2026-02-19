@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ppkd_r_1/day_10/homed10.dart';
 import 'package:flutter_ppkd_r_1/latih/isi.dart';
 import 'package:flutter_ppkd_r_1/latih/navbar.dart';
 import 'package:flutter_ppkd_r_1/latih/widget1.dart';
@@ -10,15 +11,30 @@ class Latih extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.home, size: 32),
+        leading: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeD10()),
+            );
+          },
+          child: Image.asset('assets/images/logof1.png'),
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(2),
+          child: Container(
+            color: const Color.fromARGB(255, 211, 211, 211),
+            height: 5,
+          ),
+        ),
         titleTextStyle: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
           color: const Color.fromARGB(255, 0, 0, 0),
         ),
-        title: Text('Event Utama'),
-        backgroundColor: Colors.blueAccent,
-        centerTitle: true,
+        title: Text('Campus Compete'),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        // centerTitle: true,
         actions: [
           IconButton(
             iconSize: 32,
