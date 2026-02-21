@@ -3,6 +3,7 @@ import 'package:flutter_ppkd_r_1/day_10/homed10.dart';
 import 'package:flutter_ppkd_r_1/latih/home.dart';
 import 'package:flutter_ppkd_r_1/tugas3/tugas3.dart';
 import 'package:flutter_ppkd_r_1/tugas4/tugas4.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter6/login.dart';
 
 void main() {
   runApp(const MainApp());
@@ -21,7 +22,8 @@ class MainApp extends StatelessWidget {
       // home: Tugas1(),
       // home: Tugas3(),
       // home: Tugas4(),
-      home: HomeD10(),
+      // home: HomeD10(),
+      home: Login6(),
       // home: Latih(),
     );
   }
