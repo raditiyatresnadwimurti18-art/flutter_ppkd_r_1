@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_ppkd_r_1/tugas_flutter6/login.dart';
 
-class HomeT6 extends StatelessWidget {
+class HomeT6 extends StatefulWidget {
   const HomeT6({super.key});
 
+  @override
+  State<HomeT6> createState() => _HomeT6State();
+}
+
+class _HomeT6State extends State<HomeT6> {
+  bool xt6 = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +60,20 @@ class HomeT6 extends StatelessWidget {
                   icon: Icon(Icons.search),
                   suffixIcon: Icon(Icons.filter_list),
                 ),
+              ),
+              SizedBox(height: 15),
+              Row(
+                children: [
+                  Text(
+                    'Kategori populer',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Text(
+                    'Lihat Semua',
+                    style: TextStyle(fontSize: 16, color: Colors.blue),
+                  ),
+                ],
               ),
             ],
           ),
