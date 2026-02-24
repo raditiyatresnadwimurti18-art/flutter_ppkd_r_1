@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ppkd_r_1/latih/page2.dart';
 
 class MyWidget1 extends StatelessWidget {
   const MyWidget1({super.key});
@@ -22,14 +23,22 @@ class MyWidget1 extends StatelessWidget {
       child: Row(
         children: [
           Spacer(),
-          Container(
-            margin: EdgeInsets.all(16),
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.lightBlueAccent,
-              borderRadius: BorderRadius.circular(50),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Page2Latih()),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.lightBlueAccent,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Icon(Icons.event, size: 25, color: Colors.white),
             ),
-            child: Icon(Icons.event, size: 25, color: Colors.white),
           ),
           Spacer(),
           Container(

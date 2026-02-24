@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ppkd_r_1/day_10/homed10.dart';
 import 'package:flutter_ppkd_r_1/latih/isi.dart';
 import 'package:flutter_ppkd_r_1/latih/navbar.dart';
+import 'package:flutter_ppkd_r_1/latih/page2.dart';
 import 'package:flutter_ppkd_r_1/latih/widget1.dart';
 
-class Latih extends StatelessWidget {
+class Latih extends StatefulWidget {
   const Latih({super.key});
 
+  @override
+  State<Latih> createState() => _LatihState();
+}
+
+class _LatihState extends State<Latih> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +46,10 @@ class Latih extends StatelessWidget {
             iconSize: 32,
             icon: Icon(Icons.person_2_outlined),
             onPressed: () {
-              // Aksi ketika tombol pengaturan ditekan
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Page2Latih()),
+              );
             },
           ),
         ],
