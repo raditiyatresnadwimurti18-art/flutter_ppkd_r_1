@@ -42,13 +42,12 @@ final List<DaftarEvent> daftarEvent = [
   DaftarEvent(
     event: "Lomba Masak Kreasi Mie",
     gambar:
-        "https://images.unsplash.com/photo-1512058560366-9bb391f79f75?w=400",
+        "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=400",
     kuota: "10",
   ),
   DaftarEvent(
     event: "Debat Bahasa Inggris",
-    gambar:
-        "https://images.unsplash.com/photo-1475721027187-402ad2989a3b?w=400",
+    gambar: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=400",
     kuota: "24",
   ),
   DaftarEvent(
@@ -160,8 +159,7 @@ final List<DaftarEvent> daftarEvent = [
   ),
   DaftarEvent(
     event: "Lomba Pidato Nasional",
-    gambar:
-        "https://images.unsplash.com/photo-1475721027187-402ad2989a3b?w=400",
+    gambar: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=400",
     kuota: "20",
   ),
   DaftarEvent(

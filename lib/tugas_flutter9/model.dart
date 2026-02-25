@@ -11,19 +11,14 @@ class Model extends StatefulWidget {
 class _ModelState extends State<Model> {
   @override
   Widget build(BuildContext context) {
+    final data = daftarEvent;
     return ListView.builder(
-      itemCount: daftarEvent.length,
+      itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
-        final data = daftarEvent;
-        return Container(
-          margin: EdgeInsets.all(23),
-          // height: 23,
-          decoration: BoxDecoration(color: Colors.amber),
-          child: ListTile(
-            leading: Image.network(data[index].gambar ?? ''),
-            title: Text(data[index].event ?? ''),
-            subtitle: Text(data[index].kuota ?? ''),
-          ),
+        return ListTile(
+          leading: Image.network(data[index].gambar ?? ''),
+          title: Text(data[index].event ?? ''),
+          subtitle: Text(data[index].kuota ?? ''),
         );
       },
     );
