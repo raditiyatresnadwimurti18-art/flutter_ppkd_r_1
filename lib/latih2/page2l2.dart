@@ -12,7 +12,7 @@ class Page2L2 extends StatelessWidget {
         Container(
           width: 100,
           height: 100,
-          decoration: BoxDecoration(color: Colors.amber),
+          decoration: BoxDecoration(color: const Color.fromARGB(255, 0, 0, 0)),
         ),
       ],
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter6/login1.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter10/login1.dart';
 
 class Login6 extends StatelessWidget {
   const Login6({super.key});

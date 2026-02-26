@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_ppkd_r_1/tugas_flutter6/login.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter10/login.dart';
 
 class HomeT6 extends StatefulWidget {
-  const HomeT6({super.key});
+  final String text;
+  final String text2;
+  const HomeT6({super.key, required this.text, required this.text2});
 
   @override
   State<HomeT6> createState() => _HomeT6State();
@@ -46,10 +48,10 @@ class _HomeT6State extends State<HomeT6> {
             children: [
               SizedBox(height: 24),
               Text(
-                'Hallo, Peserta\u{1F44B}',
+                'Hallo, radit second\u{1F44B}',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              Text('Temukan kompetisi terbaik untuk karirmu.'),
+              Text('Temukan pantat terbaik untuk karirmu.'),
               SizedBox(height: 15),
               TextField(
                 decoration: InputDecoration(
@@ -74,6 +76,13 @@ class _HomeT6State extends State<HomeT6> {
                     style: TextStyle(fontSize: 16, color: Colors.blue),
                   ),
                 ],
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: Text(
+                  "Hallo ${widget.text} dari kota ${widget.text2}",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),

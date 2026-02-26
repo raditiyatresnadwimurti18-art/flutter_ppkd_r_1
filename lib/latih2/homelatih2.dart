@@ -12,29 +12,33 @@ class Homelatih2 extends StatefulWidget {
 }
 
 class _Homelatih2State extends State<Homelatih2> {
-  int _selectedIndex = 0;
-  static const List<Widget> _widgetSaye = <Widget>[
+  int _curentIndex = 0;
+  final List<Widget> _widgetSaya = <Widget>[
     Page1L2(),
     Page2L2(),
     Page3L2(),
     ProfilL2(),
   ];
-  // void _onTap(int x) {
-  //   setState(() {
-  //     _selectedIndex = x;
-  //   });
-  // }
+  void _ontap(int x) {
+    setState(() {
+      _curentIndex = x;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.blueGrey, title: Text('Latih 2')),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
-        onTap: (value) => _widgetSaye,
+        // onTap: _ontap,
+        currentIndex: _curentIndex,
+        // onTap:
       ),
+      body: _widgetSaya.elementAt(_curentIndex),
     );
   }
 }

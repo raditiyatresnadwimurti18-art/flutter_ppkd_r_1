@@ -5,8 +5,8 @@ import 'package:flutter_ppkd_r_1/latih/home.dart';
 import 'package:flutter_ppkd_r_1/latih2/homelatih2.dart';
 import 'package:flutter_ppkd_r_1/tugas3/tugas3.dart';
 import 'package:flutter_ppkd_r_1/tugas4/tugas4.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter6/home_t_6.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter6/login.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter10/home_t_6.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter10/login.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter7/homet7.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter7/homet8.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter9/homet9.dart';
@@ -30,8 +30,8 @@ class MainApp extends StatelessWidget {
       // home: Tugas4(),
       // home: HomeT7(),
       // home: HomeT8(),
-      home: HomeT9(),
-      // home: Login6(),
+      // home: HomeT9(),
+      home: Login6(),
       // home: HomeD10(),
       // home: Latih(),
       // home: Homelatih2(),
