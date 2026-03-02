@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter10/home_t_6.dart';
+import 'package:flutter_ppkd_r_1/extension/navigator.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/database/preference.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/database/sqflite.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/home_t_6.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/model/user_model.dart';
 
 class RegisterT10 extends StatefulWidget {
   const RegisterT10({super.key});
@@ -15,6 +19,7 @@ class _RegisterT10State extends State<RegisterT10> {
   final TextEditingController kotaControler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool x = true;
+  bool y = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +32,7 @@ class _RegisterT10State extends State<RegisterT10> {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Form(
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.onUnfocus,
                 child: Column(
                   children: [
                     TextFormField(
@@ -127,7 +133,12 @@ class _RegisterT10State extends State<RegisterT10> {
                       width: double.infinity,
                       height: 50,
                       child: OutlinedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final UserModel? Login = await DBHelper.loginUser(
+                            email: emailControler.text,
+                            password: passwordControler.text,
+                          );
+
                           if (_formKey.currentState!.validate()) {
                             Navigator.pushReplacement(
                               context,
@@ -140,21 +151,60 @@ class _RegisterT10State extends State<RegisterT10> {
                             );
                           }
                           if (_formKey.currentState!.validate()) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                content: Text(
-                                  'Berhasil mendaftar akun, Trimakasih',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text('Lanjutkan'),
+                            PreferenceHandler().storingIsLogin(true);
+                            // context.push(HomeT6(text: "nama", text2: "kota"));
+                            if (Login != null) {
+                              PreferenceHandler().storingIsLogin(true);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Login berhasil, selamat datang',
                                   ),
-                                ],
-                              ),
+                                ),
+                              );
+                              await Future.delayed(Duration(seconds: 2));
+
+                              context.push(
+                                HomeT6(
+                                  text: namaControler.text,
+                                  text2: kotaControler.text,
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Login Gagal")),
+                              );
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Login Gagal")),
                             );
                           }
+
+                          // if (_formKey.currentState!.validate()) {
+                          //   showDialog(
+                          //     context: context,
+                          //     builder: (context) => AlertDialog(
+                          //       content: Text(
+                          //         'Berhasil mendaftar akun, Trimakasih',
+                          //       ),
+                          //       actions: [
+                          //         TextButton(
+                          //           onPressed: () {
+                          //             context.push(
+                          //               HomeT6(
+                          //                 text: namaControler.text,
+                          //                 text2: kotaControler.text,
+                          //               ),
+                          //             );
+                          //             y = !y;
+                          //           },
+                          //           child: Text('Lanjutkan'),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   );
+                          // }
                         },
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
@@ -176,7 +226,17 @@ class _RegisterT10State extends State<RegisterT10> {
                       width: double.infinity,
                       height: 50,
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          DBHelper.registerUser(
+                            UserModel(
+                              email: emailControler.text,
+                              password: passwordControler.text,
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Pendaftan berhasil')),
+                          );
+                        },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.black),
                         ),
@@ -184,7 +244,7 @@ class _RegisterT10State extends State<RegisterT10> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Lupa password',
+                              'Daftarkan',
                               style: TextStyle(
                                 color: const Color.fromARGB(255, 0, 0, 0),
                               ),

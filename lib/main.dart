@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ppkd_r_1/day_10/homed10.dart';
-import 'package:flutter_ppkd_r_1/day_11/login_pages.dart';
-import 'package:flutter_ppkd_r_1/latih/home.dart';
-import 'package:flutter_ppkd_r_1/latih2/homelatih2.dart';
-import 'package:flutter_ppkd_r_1/tugas3/tugas3.dart';
-import 'package:flutter_ppkd_r_1/tugas4/tugas4.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter10/home_t_6.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter10/login.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter7/homet7.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter7/homet8.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter9/homet9.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/database/preference.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/login.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/login1.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/view/cr_siswa.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/view/splashscreen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PreferenceHandler().init();
   runApp(const MainApp());
 }
 
@@ -31,7 +27,9 @@ class MainApp extends StatelessWidget {
       // home: HomeT7(),
       // home: HomeT8(),
       // home: HomeT9(),
-      home: Login6(),
+      // home: Login61(),
+      // home: SplashscreenT16(),
+      home: CrSiswaDay17(),
       // home: HomeD10(),
       // home: Latih(),
       // home: Homelatih2(),

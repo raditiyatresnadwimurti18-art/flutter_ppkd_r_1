@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/database/preference.dart';
 
-import 'package:flutter_ppkd_r_1/tugas_flutter10/login.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/login.dart';
 
 class HomeT6 extends StatefulWidget {
   final String text;
@@ -12,6 +13,7 @@ class HomeT6 extends StatefulWidget {
 }
 
 class _HomeT6State extends State<HomeT6> {
+  bool x = true;
   bool xt6 = true;
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,8 @@ class _HomeT6State extends State<HomeT6> {
         actions: [
           IconButton(
             onPressed: () {
+              PreferenceHandler.deleteIsLogin();
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Login6()),
@@ -78,6 +82,7 @@ class _HomeT6State extends State<HomeT6> {
                 ],
               ),
               SizedBox(height: 20),
+
               Center(
                 child: Text(
                   "Hallo ${widget.text} dari kota ${widget.text2}",

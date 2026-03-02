@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter10/home_t_6.dart';
-import 'package:flutter_ppkd_r_1/tugas_flutter10/registert10.dart';
+import 'package:flutter_ppkd_r_1/extension/navigator.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/database/preference.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/home_t_6.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter11/registert10.dart';
 
 class Login61 extends StatefulWidget {
   const Login61({super.key});
@@ -91,13 +93,8 @@ class _Login61State extends State<Login61> {
                       child: OutlinedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    HomeT6(text: "", text2: ""),
-                              ),
-                            );
+                            PreferenceHandler().storingIsLogin(true);
+                            context.push(HomeT6(text: "nama", text2: "kota"));
                           }
                         },
                         style: OutlinedButton.styleFrom(
@@ -153,7 +150,12 @@ class _Login61State extends State<Login61> {
                       width: double.infinity,
                       height: 50,
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          () async {
+                            var dataIsLogin = PreferenceHandler.getIsLogin();
+                            print(dataIsLogin);
+                          };
+                        },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.black),
                         ),
@@ -174,6 +176,32 @@ class _Login61State extends State<Login61> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 30),
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   height: 50,
+                    //   child: OutlinedButton(
+                    //     onPressed: () {},
+                    //     style: OutlinedButton.styleFrom(
+                    //       side: BorderSide(color: Colors.black),
+                    //     ),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //         Text(
+                    //           'Lupa password',
+                    //           style: TextStyle(
+                    //             color: const Color.fromARGB(255, 0, 0, 0),
+                    //           ),
+                    //         ),
+                    //         Icon(
+                    //           Icons.chevron_right,
+                    //           color: const Color.fromARGB(255, 0, 0, 0),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
