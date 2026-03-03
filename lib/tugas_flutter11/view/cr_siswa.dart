@@ -14,6 +14,19 @@ class CrSiswaDay17 extends StatefulWidget {
 }
 
 class _CrSiswaDay17State extends State<CrSiswaDay17> {
+  late List<Tugas11Model> dataSiswa = [];
+  @override
+  void initState() {
+    super.initState();
+    getDataSiswa();
+  }
+
+  Future<void> getDataSiswa() async {
+    await Future.delayed(Duration(seconds: 3));
+    dataSiswa = await SiswaControler.getAllsiswa();
+    setState(() {});
+  }
+
   final TextEditingController nameControler = TextEditingController();
   final TextEditingController kelasControler = TextEditingController();
   final TextEditingController tlponControler = TextEditingController();
@@ -155,10 +168,22 @@ class _CrSiswaDay17State extends State<CrSiswaDay17> {
                                     ),
                                   ],
                                 ),
-                                Text("Kelas: ${items.kelas}"),
-                                Text("No Tlpon: ${items.tlpon}"),
-                                Text("Email: ${items.emailSiswa}"),
-                                Text("Kota Asal: ${items.kota}"),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Kelas: ${items.kelas}"),
+                                          Text("No Tlpon: ${items.tlpon}"),
+                                          Text("Email: ${items.emailSiswa}"),
+                                          Text("Kota Asal: ${items.kota}"),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -174,5 +199,100 @@ class _CrSiswaDay17State extends State<CrSiswaDay17> {
         ),
       ),
     );
+  }
+
+  Future<void> showEditDialog(BuildContext context, Tugas11Model items) async {
+    final namaController = TextEditingController(text: items.nama);
+    final kelasController = TextEditingController(text: items.kelas);
+    final emailControler = TextEditingController(text: items.emailSiswa);
+    final tlponControler = TextEditingController(text: items.tlpon);
+    final kotaControler = TextEditingController(text: items.kota);
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Edit Siswa"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: namaController,
+                decoration: InputDecoration(hintText: "Nama"),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: kelasController,
+                decoration: InputDecoration(hintText: "Kelas"),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.pop();
+              },
+              child: Text("Batal"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (items.id == null) {
+                  return;
+                }
+                await SiswaControler.updateSiswa(
+                  Tugas11Model(
+                    id: items.id,
+                    nama: namaController.text,
+                    kelas: kelasController.text,
+                    emailSiswa: emailControler.text,
+                    tlpon: tlponControler.text,
+                    kota: kotaControler.text,
+                  ),
+                );
+                context.pop();
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text("Siswa di update")));
+              },
+              child: Text("Simpan"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showDeleteDialog(BuildContext context, int id) async {
+    final confirm = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Konfirmasi"),
+          content: Text("Apakah anda yakin ingin menghapus data ini?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.pop(false);
+              },
+              child: Text("Batal"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                context.pop(true);
+              },
+              child: Text("Hapus bae"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm == true) {
+      await SiswaControler.deleteSiswa(id);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Data berhasil dihapus")));
+      setState(() {});
+    }
   }
 }

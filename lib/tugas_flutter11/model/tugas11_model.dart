@@ -2,12 +2,14 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Tugas11Model {
+  final int? id;
   final String nama;
   final String kelas;
   final String emailSiswa;
   final String tlpon;
   final String kota;
   Tugas11Model({
+    this.id,
     required this.nama,
     required this.kelas,
     required this.emailSiswa,
@@ -17,6 +19,7 @@ class Tugas11Model {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'nama': nama,
       'kelas': kelas,
       'emailSiswa': emailSiswa,
@@ -27,6 +30,7 @@ class Tugas11Model {
 
   factory Tugas11Model.fromMap(Map<String, dynamic> map) {
     return Tugas11Model(
+      id: map['id'] != null ? map['id'] as int : null,
       nama: map['nama'] as String,
       kelas: map['kelas'] as String,
       emailSiswa: map['emailSiswa'] as String,
