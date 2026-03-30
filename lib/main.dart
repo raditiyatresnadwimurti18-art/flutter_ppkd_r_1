@@ -4,6 +4,7 @@ import 'package:flutter_ppkd_r_1/tugas_flutter11/login.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter11/login1.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter11/view/cr_siswa.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter11/view/splashscreen.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter14/view/tugas14.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,10 +30,11 @@ class MainApp extends StatelessWidget {
       // home: HomeT9(),
       // home: Login61(),
       // home: SplashscreenT16(),
-      home: CrSiswaDay17(),
+      // home: CrSiswaDay17(),
       // home: HomeD10(),
       // home: Latih(),
       // home: Homelatih2(),
+      home: Tugas14(),
     );
   }
 }

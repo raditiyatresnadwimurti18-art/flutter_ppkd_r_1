@@ -5,6 +5,7 @@ import 'package:flutter_ppkd_r_1/tugas_flutter11/home_t_6.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter11/login.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter11/login1.dart';
 import 'package:flutter_ppkd_r_1/extension/navigator.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter14/view/tugas14.dart';
 
 class SplashscreenT16 extends StatefulWidget {
   const SplashscreenT16({super.key});
@@ -26,10 +27,15 @@ class _SplashscreenT16State extends State<SplashscreenT16> {
     // print(data);
     // print("Hai, Joshua");
 
+    // if (data == true) {
+    //   context.pushAndRemoveAll(HomeT6(text: 'nama', text2: 'kota'));
+    // } else {
+    //   context.pushAndRemoveAll(Login6());
+    // }
     if (data == true) {
-      context.pushAndRemoveAll(HomeT6(text: 'nama', text2: 'kota'));
+      context.pushAndRemoveAll(Tugas14());
     } else {
-      context.pushAndRemoveAll(Login6());
+      context.pushAndRemoveAll(Tugas14());
     }
   }
 
