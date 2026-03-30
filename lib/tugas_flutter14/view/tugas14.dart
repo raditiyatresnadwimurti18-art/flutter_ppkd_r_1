@@ -1,8 +1,9 @@
-// tugas14.dart
-
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart'; // Import slider
 import 'package:flutter_ppkd_r_1/tugas_flutter14/api/get_produk.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter14/helper/search_translator.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter14/model/produk_model.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter14/view/detail_produk.dart';
 
 class Tugas14 extends StatefulWidget {
   const Tugas14({super.key});
@@ -12,15 +13,22 @@ class Tugas14 extends StatefulWidget {
 }
 
 class _Tugas14State extends State<Tugas14> {
-  // Simpan semua produk dari API (tidak pernah diubah)
   List<DaftarProduk> _allProduk = [];
-
-  // Daftar yang ditampilkan (berubah saat user mengetik)
   List<DaftarProduk> _filteredProduk = [];
-
-  final TextEditingController _searchController = TextEditingController();
   bool _isLoading = true;
   String? _errorMessage;
+  final TextEditingController _searchController = TextEditingController();
+
+  // 7 Link Gambar Landscape Produk
+  final List<String> _bannerImages = [
+    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000&auto=format&fit=crop", // Fashion Store
+    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop", // Watch/Gadget
+    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop", // Electronics/Headphone
+    "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop", // Shopping Bags
+    "https://images.unsplash.com/photo-1491336477066-31156b5e4f35?q=80&w=1000&auto=format&fit=crop", // Men Fashion
+    "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=1000&auto=format&fit=crop", // Jewelry
+    "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1000&auto=format&fit=crop", // Sneakers
+  ];
 
   @override
   void initState() {
@@ -28,19 +36,16 @@ class _Tugas14State extends State<Tugas14> {
     _loadData();
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  // Fetch data sekali saja saat widget pertama dibuka
   Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
     try {
       final data = await getUser();
       setState(() {
         _allProduk = data;
-        _filteredProduk = data; // awalnya tampilkan semua
+        _filteredProduk = data;
         _isLoading = false;
       });
     } catch (e) {
@@ -51,9 +56,9 @@ class _Tugas14State extends State<Tugas14> {
     }
   }
 
-  // Filter di memori, tanpa request API tambahan
   void _onSearchChanged(String query) {
-    final keyword = query.toLowerCase();
+    final translated = translateQuery(query);
+    final keyword = translated.toLowerCase();
     setState(() {
       _filteredProduk = _allProduk.where((produk) {
         final title = produk.title?.toLowerCase() ?? '';
@@ -63,98 +68,387 @@ class _Tugas14State extends State<Tugas14> {
     });
   }
 
+  void _showGeminiAISheet(BuildContext context) {
+    final TextEditingController aiController = TextEditingController();
+    final TextEditingController budgetController =
+        TextEditingController(); // Controller baru
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 20,
+            right: 20,
+            top: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.auto_awesome, color: Color(0xFF1B66C9)),
+                  SizedBox(width: 10),
+                  Text(
+                    "Gemini Shopping Assistant",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+
+              // Input Kondisi
+              const Text(
+                "Apa yang kamu cari?",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: aiController,
+                decoration: InputDecoration(
+                  hintText: "Contoh: Baju untuk lari pagi...",
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+
+              // Input Budget
+              const Text(
+                "Budget Maksimal (\$)",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: budgetController,
+                keyboardType: TextInputType.number, // Hanya angka
+                decoration: InputDecoration(
+                  hintText: "Contoh: 50",
+                  prefixText: "\$ ",
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1B66C9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Kirim kedua data ke fungsi pemroses
+                    double? maxPrice = double.tryParse(budgetController.text);
+                    _processAIWithBudget(aiController.text, maxPrice);
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "Cari Sesuai Budget",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _processAIWithBudget(String userInput, double? maxPrice) {
+    String keyword = userInput.toLowerCase();
+    String categoryTarget = "";
+
+    // 1. Mapping Kategori (Sama seperti sebelumnya)
+    if (keyword.contains("pesta") || keyword.contains("perhiasan")) {
+      categoryTarget = "jewelery";
+    } else if (keyword.contains("olahraga") || keyword.contains("pria")) {
+      categoryTarget = "men's clothing";
+    } else if (keyword.contains("elektronik") || keyword.contains("gadget")) {
+      categoryTarget = "electronics";
+    } else if (keyword.contains("wanita") || keyword.contains("cewek")) {
+      categoryTarget = "women's clothing";
+    }
+
+    setState(() {
+      _filteredProduk = _allProduk.where((produk) {
+        // Filter Berdasarkan Kategori (jika ditemukan) atau Judul
+        bool matchCategory = categoryTarget.isEmpty
+            ? (produk.title?.toLowerCase().contains(keyword) ?? false)
+            : (produk.category?.toLowerCase() == categoryTarget);
+
+        // Filter Berdasarkan Budget (jika diisi)
+        bool matchPrice =
+            (maxPrice == null) ||
+            (produk.price != null && produk.price! <= maxPrice);
+
+        return matchCategory && matchPrice;
+      }).toList();
+
+      // Update teks di search bar agar user tahu apa yang sedang difilter
+      _searchController.text = userInput;
+    });
+
+    // Notifikasi Feedback
+    String message = maxPrice != null
+        ? "Menampilkan hasil untuk '$userInput' di bawah \$$maxPrice"
+        : "Menampilkan hasil untuk '$userInput'";
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: const Color(0xFF1B66C9),
+        content: Text(message),
+      ),
+    );
+  }
+
+  void _processAIRecommendation(String userInput) {
+    String keyword = userInput.toLowerCase();
+    String filterResult = "";
+
+    // Logika Pemetaan Sederhana (Simulasi Berpikir AI)
+    if (keyword.contains("pesta") ||
+        keyword.contains("mewah") ||
+        keyword.contains("kado istri")) {
+      filterResult = "jewelery";
+    } else if (keyword.contains("olahraga") ||
+        keyword.contains("lari") ||
+        keyword.contains("pria")) {
+      filterResult = "men's clothing";
+    } else if (keyword.contains("kerja") ||
+        keyword.contains("kantor") ||
+        keyword.contains("wanita")) {
+      filterResult = "women's clothing";
+    } else if (keyword.contains("gadget") ||
+        keyword.contains("elektronik") ||
+        keyword.contains("hp") ||
+        keyword.contains("laptop")) {
+      filterResult = "electronics";
+    } else {
+      // Jika tidak ada kata kunci yang cocok, gunakan input user langsung
+      filterResult = userInput;
+    }
+
+    // Update Search Bar dan Filter Produk
+    _searchController.text = filterResult;
+    _onSearchChanged(filterResult);
+
+    // Berikan feedback ke user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: const Color(0xFF1B66C9),
+        content: Text("AI merekomendasikan produk untuk: '$filterResult'"),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Daftar Produk")),
+      appBar: AppBar(
+        title: const Text(
+          "Toko Maniak",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Color(0xfff71b64f),
+      ),
       body: Column(
         children: [
-          // --- Search Bar ---
+          // 1. Kolom Pencarian
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: TextField(
               controller: _searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Cari produk atau kategori...',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          _onSearchChanged('');
-                        },
-                      )
-                    : null,
+                hintText: 'Cari produk...',
+                prefixIcon: const Icon(Icons.search, color: Colors.green),
+                filled: true,
+                fillColor: Colors.green[50],
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.green, width: 1),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.green, width: 2),
+                ),
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                contentPadding: EdgeInsets.zero,
               ),
             ),
           ),
 
-          // --- Konten Utama ---
-          Expanded(child: _buildBody()),
+          // 2. Slider Banner (Hanya muncul jika tidak sedang mencari atau hasil ada)
+          if (_searchController.text.isEmpty)
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 160.0,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 16 / 9,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                viewportFraction: 0.85,
+              ),
+              items: _bannerImages.map((imageUrl) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                          image: NetworkImage(imageUrl),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+
+          const SizedBox(height: 15),
+
+          // 3. Grid Produk
+          Expanded(
+            child: RefreshIndicator(onRefresh: _loadData, child: _buildBody()),
+          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          _showGeminiAISheet(context);
+        },
+        label: const Text(
+          "Tanya AI Gemini",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        icon: const Icon(Icons.auto_awesome, color: Colors.white),
+        backgroundColor: const Color(0xFF1B66C9), // Biru khas Gemini
+        elevation: 4,
       ),
     );
   }
 
   Widget _buildBody() {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (_errorMessage != null) {
-      return Center(child: Text("Terjadi kesalahan: $_errorMessage"));
-    }
-
-    if (_filteredProduk.isEmpty) {
+    if (_isLoading) return const Center(child: CircularProgressIndicator());
+    if (_errorMessage != null)
+      return Center(child: Text("Error: $_errorMessage"));
+    if (_filteredProduk.isEmpty)
       return const Center(child: Text("Produk tidak ditemukan"));
-    }
 
-    return ListView.builder(
+    return GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.65,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
       itemCount: _filteredProduk.length,
       itemBuilder: (context, index) {
         final item = _filteredProduk[index];
-
-        return ListTile(
-          leading: SizedBox(
-            width: 50,
-            height: 50,
-            child: Image.network(
-              item.image ?? "",
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.broken_image),
-            ),
-          ),
-          title: Text(
-            item.title ?? "Tanpa Nama",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Kategori: ${item.category}"),
-              Text(
-                "Harga: \$${item.price}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
+        return GestureDetector(
+          // ← tambahan
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailProduk(produk: item),
               ),
-            ],
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.star, color: Colors.amber, size: 18),
-              Text(item.rating?.rate?.toString() ?? "0"),
-            ],
+            );
+          },
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(item.image ?? "", fit: BoxFit.contain),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.title ?? "",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                        const Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "\$${item.price}",
+                              style: const TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 14,
+                                ),
+                                Text(
+                                  "${item.rating?.rate ?? 0}",
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
