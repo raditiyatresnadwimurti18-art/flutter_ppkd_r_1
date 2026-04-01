@@ -6,6 +6,7 @@ import 'package:flutter_ppkd_r_1/tugas_flutter11/view/cr_siswa.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter11/view/splashscreen.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter14/view/splash_screent14.dart';
 import 'package:flutter_ppkd_r_1/tugas_flutter14/view/tugas14.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter15/view/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter demo',
 
@@ -36,7 +37,8 @@ class MainApp extends StatelessWidget {
       // home: Latih(),
       // home: Homelatih2(),
       // home: Tugas14(),
-      home: SplashScreenT14(),
+      // home: SplashScreenT14(),
+      home: LoginPage(),
     );
   }
 }
