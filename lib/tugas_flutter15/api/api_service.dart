@@ -120,16 +120,26 @@ class ApiService {
     String name,
     String email,
   ) async {
-    try {
-      final res = await http
-          .put(
-            Uri.parse("$baseUrl/api/user"),
-            headers: headers(token),
-            body: jsonEncode({"name": name, "email": email}),
-          )
-          .timeout(_timeout);
+    const profilePaths = ['/api/user', '/api/profile', '/api/auth/me'];
 
-      return _handleResponse(res);
+    try {
+      for (final path in profilePaths) {
+        final res = await http
+            .put(
+              Uri.parse('$baseUrl$path'),
+              headers: headers(token),
+              body: jsonEncode({'name': name, 'email': email}),
+            )
+            .timeout(_timeout);
+
+        if (res.statusCode == 404) {
+          continue;
+        }
+
+        return _handleResponse(res);
+      }
+
+      throw Exception('Profil endpoint tidak ditemukan (404)');
     } on SocketException {
       throw Exception('Tidak ada koneksi internet');
     } on TimeoutException {
