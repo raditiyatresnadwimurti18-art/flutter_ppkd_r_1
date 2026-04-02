@@ -1,0 +1,13 @@
+class ApiResponse<T> {
+  final bool success;
+  final String message;
+  final T? data;
+  final String? token;
+
+  ApiResponse({
+    required this.success,
+    required this.message,
+    this.data,
+    this.token,
+  });
+}
