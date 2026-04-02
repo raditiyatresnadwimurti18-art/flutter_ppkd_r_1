@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../api/api_service.dart';
+import 'package:flutter_ppkd_r_1/tugas_flutter15/api/api_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -9,52 +9,69 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController nameC = TextEditingController();
-  final TextEditingController emailC = TextEditingController();
-  final TextEditingController passwordC = TextEditingController();
+  final _nameC = TextEditingController();
+  final _emailC = TextEditingController();
+  final _passwordC = TextEditingController();
 
-  bool isLoading = false;
+  bool _isLoading = false;
+  bool _obscurePassword = true;
 
-  void register() async {
-    if (nameC.text.isEmpty || emailC.text.isEmpty || passwordC.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Semua field wajib diisi")));
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w.-]+@[\w.-]+\.\w{2,}$').hasMatch(email);
+  }
+
+  Future<void> _register() async {
+    final name = _nameC.text.trim();
+    final email = _emailC.text.trim();
+    final password = _passwordC.text.trim();
+
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      _showSnackBar("Semua field wajib diisi");
       return;
     }
 
-    setState(() {
-      isLoading = true;
-    });
-
-    var res = await ApiService.register(
-      nameC.text,
-      emailC.text,
-      passwordC.text,
-    );
-
-    setState(() {
-      isLoading = false;
-    });
-
-    if (res['token'] != null || res['success'] == true) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Register berhasil")));
-
-      Navigator.pop(context);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(res['message'] ?? "Register gagal")),
-      );
+    if (!_isValidEmail(email)) {
+      _showSnackBar("Format email tidak valid");
+      return;
     }
+
+    if (password.length < 8) {
+      _showSnackBar("Password minimal 8 karakter");
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final res = await ApiService.register(name, email, password);
+
+      if (!mounted) return;
+
+      if (res['success'] == true || res['data'] != null) {
+        _showSnackBar("Register berhasil, silakan login");
+        Navigator.pop(context);
+      } else {
+        _showSnackBar(res['message'] as String? ?? "Register gagal");
+      }
+    } catch (e) {
+      if (!mounted) return;
+      _showSnackBar(e.toString().replaceFirst('Exception: ', ''));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
   void dispose() {
-    nameC.dispose();
-    emailC.dispose();
-    passwordC.dispose();
+    _nameC.dispose();
+    _emailC.dispose();
+    _passwordC.dispose();
     super.dispose();
   }
 
@@ -67,48 +84,56 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-
-            // NAMA
             TextField(
-              controller: nameC,
-              decoration: InputDecoration(
+              controller: _nameC,
+              decoration: const InputDecoration(
                 labelText: "Nama",
                 border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person_outline),
               ),
             ),
-
             const SizedBox(height: 16),
-
-            // EMAIL
             TextField(
-              controller: emailC,
-              decoration: InputDecoration(
+              controller: _emailC,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
                 labelText: "Email",
                 border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.email_outlined),
               ),
             ),
-
             const SizedBox(height: 16),
-
-            // PASSWORD
             TextField(
-              controller: passwordC,
-              obscureText: true,
+              controller: _passwordC,
+              obscureText: _obscurePassword,
               decoration: InputDecoration(
                 labelText: "Password",
-                border: OutlineInputBorder(),
+                hintText: "Minimal 8 karakter",
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.lock_outline),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscurePassword
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                  ),
+                  onPressed: () =>
+                      setState(() => _obscurePassword = !_obscurePassword),
+                ),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // BUTTON
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: isLoading ? null : register,
-                child: isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
+                onPressed: _isLoading ? null : _register,
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                            color: Colors.white, strokeWidth: 2),
+                      )
                     : const Text("Register"),
               ),
             ),
